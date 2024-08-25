@@ -52,9 +52,6 @@
         
         <!-- Button to Reset the Form -->
         <button type="button" onclick="resetForm()">Reset</button>
-
-        <!-- Response Message -->
-        <p id="response"></p>
     </div>
 
     <script>
@@ -73,27 +70,28 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
-                        document.getElementById("response").innerText = data.message;
+                        alert("Voting successful!"); // Alert on successful vote
                         setTimeout(() => {
                             resetForm();
                         }, 2000);
+                    } else if (data.status === "duplicate") {
+                        alert("You have already voted!"); // Alert if the vote is a duplicate
                     } else {
-                        document.getElementById("response").innerText = data.message;
+                        alert("An error occurred: " + data.message); // Alert on any other errors
                     }
                 })
                 .catch(error => {
-                    document.getElementById("response").innerText = "An error occurred. Please try again.";
+                    alert("An error occurred. Please try again."); // General error alert
                     console.error('Error:', error);
                 });
             } else {
-                document.getElementById("response").innerText = "Please enter your registration number and select a candidate";
+                alert("Please enter your registration number and select a candidate"); // Alert if fields are missing
             }
         }
 
         function resetForm() {
             document.getElementById("regNumber").value = "";
             document.getElementById("candidate").value = "";
-            document.getElementById("response").innerText = "";
         }
     </script>
 </body>
