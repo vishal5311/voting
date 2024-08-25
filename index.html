@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Voting Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      background-color: #007bff;
+      border: none;
+      color: #fff;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #message {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vote for Your Candidate</h1>
+    <label for="registrationNumber">Registration Number:</label>
+    <input type="text" id="registrationNumber" required><br><br>
+    <label for="candidate">Candidate:</label>
+    <input type="text" id="candidate" required><br><br>
+    <button id="voteButton">Submit Vote</button>
+    <p id="message"></p>
+  </div>
+  <script>
+    async function submitVote() {
+      const registrationNumber = document.getElementById('registrationNumber').value;
+      const candidate = document.getElementById('candidate').value;
+      
+      try {
+        const response = await fetch('https://script.google.com/macros/s/AKfycby1uz4q5zA239o8AqKj2uWnxPGkQDdM6JcdEthYAnd-kob5aPwk2zjFMiKOXUw_VMQd/exec', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ registrationNumber, candidate }),
+        });
+
+        const result = await response.json();
+        const messageElement = document.getElementById('message');
+        
+        if (result.success) {
+          messageElement.textContent = 'Vote recorded successfully!';
+        } else {
+          messageElement.textContent = result.message || 'Failed to record vote';
+        }
+      } catch (error) {
+        document.getElementById('message').textContent = 'Error: ' + error.message;
+      }
+    }
+
+    document.getElementById('voteButton').addEventListener('click', submitVote);
+  </script>
+</body>
+</html>
