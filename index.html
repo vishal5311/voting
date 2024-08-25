@@ -70,20 +70,20 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.status === "success") {
-                        alert("Voting successful!"); // Alert on successful vote
+                        alert("Voting successful!");
                         setTimeout(() => {
                             resetForm();
                         }, 2000);
                     } else if (data.status === "duplicate") {
-                        alert("You have already voted!"); // Alert if the vote is a duplicate
+                        alert("You have already voted!");
                     }
                 })
                 .catch(error => {
-                    // Only alert known issues, ignore CORS errors
                     console.error('Error:', error);
+                    // Handle specific errors only
                 });
             } else {
-                alert("Please enter your registration number and select a candidate"); // Alert if fields are missing
+                alert("Please enter your registration number and select a candidate");
             }
         }
 
