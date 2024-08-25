@@ -64,36 +64,24 @@
 
             if (regNumber && candidate) {
                 document.getElementById("response").innerText = "Voting request sent. Please wait.";
-
+                
                 fetch("https://script.google.com/macros/s/AKfycbxMW1UAMtHXVD5h0-RoAGHKq-rcqhkjl8cWi-hsDdGP8pac2G9DP3pZk8IABqeBnUir/exec", {
                     method: 'POST',
-                    mode: 'no-cors', // Added this to bypass CORS issues
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: `regNumber=${regNumber}&candidate=${candidate}`
+                    body: `regNumber=${regNumber}&candidate=${candidate}`,
+                    mode: 'no-cors'  // Disabling CORS checks
                 })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    if (data.status === "success") {
-                        alert("Voting successful!");
-                        resetForm();
-                    } else if (data.status === "duplicate") {
-                        alert("You have already voted!");
-                    } else {
-                        alert("An error occurred. Please try again.");
-                    }
+                .then(() => {
+                    // Since no-cors limits response access, directly show a success message
+                    document.getElementById("response").innerText = "Vote has been submitted successfully. If you have already voted, it won't count.";
                 })
                 .catch(() => {
-                    alert("An error occurred. Please try again.");
+                    document.getElementById("response").innerText = "An error occurred. Please try again.";
                 });
             } else {
-                alert("Please enter your registration number and select a candidate.");
+                document.getElementById("response").innerText = "Please enter your registration number and select a candidate.";
             }
         }
 
