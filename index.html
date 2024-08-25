@@ -52,6 +52,9 @@
         
         <!-- Button to Reset the Form -->
         <button type="button" onclick="resetForm()">Reset</button>
+
+        <!-- Response Message -->
+        <p id="response"></p>
     </div>
 
     <script>
@@ -60,36 +63,30 @@
             const candidate = document.getElementById("candidate").value;
 
             if (regNumber && candidate) {
-                fetch("https://script.google.com/macros/s/AKfycbxMW1UAMtHXVD5h0-RoAGHKq-rcqhkjl8cWi-hsDdGP8pac2G9DP3pZk8IABqeBnUir/exec", { // Replace with your Web App URL
+                fetch("https://script.google.com/macros/s/AKfycbxMW1UAMtHXVD5h0-RoAGHKq-rcqhkjl8cWi-hsDdGP8pac2G9DP3pZk8IABqeBnUir/exec", {
                     method: 'POST',
+                    mode: 'no-cors', // Use no-cors mode
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },
                     body: `regNumber=${regNumber}&candidate=${candidate}`
                 })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.status === "success") {
-                        alert("Voting successful!");
-                        setTimeout(() => {
-                            resetForm();
-                        }, 2000);
-                    } else if (data.status === "duplicate") {
-                        alert("You have already voted!");
-                    }
+                .then(() => {
+                    // Response handling is limited with no-cors
+                    document.getElementById("response").innerText = "Voting request sent. Please wait.";
                 })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Handle specific errors only
+                .catch(() => {
+                    document.getElementById("response").innerText = "An error occurred. Please try again.";
                 });
             } else {
-                alert("Please enter your registration number and select a candidate");
+                document.getElementById("response").innerText = "Please enter your registration number and select a candidate";
             }
         }
 
         function resetForm() {
             document.getElementById("regNumber").value = "";
             document.getElementById("candidate").value = "";
+            document.getElementById("response").innerText = "";
         }
     </script>
 </body>
