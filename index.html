@@ -81,7 +81,11 @@
                     }
                 })
                 .catch(error => {
-                    alert("An error occurred. Please try again."); // General error alert
+                    if (error.message.includes("Failed to fetch")) {
+                        alert("Unable to connect to the server. Please try again later."); // General error alert
+                    } else {
+                        alert("An unexpected error occurred. Please try again."); // General error alert
+                    }
                     console.error('Error:', error);
                 });
             } else {
