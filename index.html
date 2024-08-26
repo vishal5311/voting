@@ -4,7 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>College Election Voting</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #74b9ff, #0984e3);
@@ -12,10 +21,10 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            margin: 0;
             padding: 20px;
             color: #2d3436;
         }
+        
         .container {
             background-color: #fff;
             padding: 40px;
@@ -24,32 +33,48 @@
             max-width: 800px;
             width: 100%;
         }
+        
         .container h2 {
             text-align: center;
             margin-bottom: 30px;
             color: #0984e3;
+            font-size: 28px;
         }
+        
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            text-align: center;
         }
+        
         .form-group label {
             display: block;
-            margin-bottom: 8px;
-            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #2d3436;
         }
+        
         .form-group input {
             width: 100%;
-            padding: 10px;
+            max-width: 400px;
+            padding: 12px 15px;
             font-size: 16px;
+            border: 1px solid #dfe6e9;
             border-radius: 5px;
-            border: 1px solid #ddd;
+            outline: none;
+            transition: border-color 0.3s;
         }
+        
+        .form-group input:focus {
+            border-color: #0984e3;
+        }
+        
         .candidates-container {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
+        
         .candidate-box {
             background-color: #f5f5f5;
             border-radius: 10px;
@@ -59,14 +84,17 @@
             transition: transform 0.3s, box-shadow 0.3s;
             border: 2px solid transparent;
         }
+        
         .candidate-box:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
+        
         .candidate-box.selected {
             border-color: #0984e3;
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
+        
         .candidate-box img {
             width: 100%;
             height: 150px;
@@ -74,20 +102,24 @@
             border-radius: 8px;
             margin-bottom: 10px;
         }
+        
         .candidate-box h3 {
             font-size: 18px;
             color: #2d3436;
             margin-bottom: 5px;
         }
+        
         .candidate-box p {
             font-size: 14px;
             color: #636e72;
         }
+        
         .buttons {
             display: flex;
             justify-content: center;
             gap: 20px;
         }
+        
         .buttons button {
             padding: 12px 25px;
             font-size: 16px;
@@ -98,90 +130,98 @@
             transition: background-color 0.3s;
             width: 150px;
         }
-        .buttons .proceed-btn {
-            background-color: #0984e3;
-        }
-        .buttons .proceed-btn:hover {
-            background-color: #74b9ff;
-        }
+        
         .buttons .submit-btn {
             background-color: #0984e3;
         }
+        
         .buttons .submit-btn:hover {
             background-color: #74b9ff;
         }
+        
         .buttons .reset-btn {
             background-color: #d63031;
         }
+        
         .buttons .reset-btn:hover {
             background-color: #e17055;
         }
+        
         #response {
             text-align: center;
             margin-top: 20px;
             font-size: 16px;
             color: #d63031;
         }
-        #vote-section {
-            display: none;
+        
+        @media (max-width: 500px) {
+            .form-group input {
+                width: 100%;
+            }
+            
+            .buttons button {
+                width: 100%;
+            }
+        }
+
+        #voted-message {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 20px;
+            color: #0984e3;
+            display: none; /* Initially hidden */
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Registration Section -->
-        <div id="registration-section">
-            <h2>Enter Your Registration Number</h2>
-            <div class="form-group">
-                <label for="regNumber">Registration Number:</label>
-                <input type="text" id="regNumber" placeholder="Enter Registration Number">
+        <h2>Vote for Your Candidate</h2>
+        
+        <div class="form-group">
+            <label for="regNumber">Registration Number:</label>
+            <input type="text" id="regNumber" placeholder="Enter Registration Number">
+        </div>
+        
+        <div class="candidates-container">
+            <div class="candidate-box" data-candidate="Candidate 1">
+                <img src="https://via.placeholder.com/150" alt="Candidate 1">
+                <h3>Candidate 1</h3>
+                <p>Department A</p>
             </div>
-            <div class="buttons">
-                <button class="proceed-btn" onclick="proceedToVote()">Proceed</button>
+            <div class="candidate-box" data-candidate="Candidate 2">
+                <img src="https://via.placeholder.com/150" alt="Candidate 2">
+                <h3>Candidate 2</h3>
+                <p>Department B</p>
+            </div>
+            <div class="candidate-box" data-candidate="Candidate 3">
+                <img src="https://via.placeholder.com/150" alt="Candidate 3">
+                <h3>Candidate 3</h3>
+                <p>Department C</p>
+            </div>
+            <div class="candidate-box" data-candidate="Candidate 4">
+                <img src="https://via.placeholder.com/150" alt="Candidate 4">
+                <h3>Candidate 4</h3>
+                <p>Department D</p>
+            </div>
+            <div class="candidate-box" data-candidate="Candidate 5">
+                <img src="https://via.placeholder.com/150" alt="Candidate 5">
+                <h3>Candidate 5</h3>
+                <p>Department E</p>
+            </div>
+            <div class="candidate-box" data-candidate="Candidate 6">
+                <img src="https://via.placeholder.com/150" alt="Candidate 6">
+                <h3>Candidate 6</h3>
+                <p>Department F</p>
             </div>
         </div>
-
-        <!-- Vote Section -->
-        <div id="vote-section">
-            <h2>Vote for Your Candidate</h2>
-            <div class="candidates-container">
-                <div class="candidate-box" data-candidate="Candidate 1">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 1">
-                    <h3>Candidate 1</h3>
-                    <p>Department A</p>
-                </div>
-                <div class="candidate-box" data-candidate="Candidate 2">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 2">
-                    <h3>Candidate 2</h3>
-                    <p>Department B</p>
-                </div>
-                <div class="candidate-box" data-candidate="Candidate 3">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 3">
-                    <h3>Candidate 3</h3>
-                    <p>Department C</p>
-                </div>
-                <div class="candidate-box" data-candidate="Candidate 4">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 4">
-                    <h3>Candidate 4</h3>
-                    <p>Department D</p>
-                </div>
-                <div class="candidate-box" data-candidate="Candidate 5">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 5">
-                    <h3>Candidate 5</h3>
-                    <p>Department E</p>
-                </div>
-                <div class="candidate-box" data-candidate="Candidate 6">
-                    <img src="https://via.placeholder.com/150" alt="Candidate 6">
-                    <h3>Candidate 6</h3>
-                    <p>Department F</p>
-                </div>
-            </div>
-            <div class="buttons">
-                <button class="submit-btn" onclick="submitVote()">Submit Vote</button>
-                <button class="reset-btn" onclick="resetForm()">Reset</button>
-            </div>
-            <p id="response"></p>
+        
+        <div class="buttons">
+            <button class="submit-btn" onclick="submitVote()">Submit Vote</button>
+            <button class="reset-btn" onclick="resetForm()">Reset</button>
         </div>
+        
+        <p id="response"></p>
+        <p id="voted-message">Thank you! Your vote has been successfully cast.</p> <!-- Voted message -->
     </div>
 
     <script>
@@ -196,50 +236,46 @@
             });
         });
 
-        function proceedToVote() {
-            const regNumber = document.getElementById('regNumber').value.trim();
-            if (regNumber) {
-                localStorage.setItem('regNumber', regNumber);
-                document.getElementById('registration-section').style.display = 'none';
-                document.getElementById('vote-section').style.display = 'block';
-            } else {
-                alert('Please enter your registration number.');
-            }
-        }
-
         function submitVote() {
-            const regNumber = localStorage.getItem('regNumber');
+            const regNumber = document.getElementById("regNumber").value.trim();
+
+            // Check if the registration number is exactly 12 digits
+            const regNumberPattern = /^\d{12}$/;
+            if (!regNumberPattern.test(regNumber)) {
+                document.getElementById("response").innerText = "Registration number must be exactly 12 digits.";
+                return;
+            }
+
             if (regNumber && selectedCandidate) {
                 document.getElementById("response").innerText = "Voting request sent. Please wait.";
                 
-                fetch("https://script.google.com/macros/s/AKfycby9zE1NdXFxs9oRre2l5K2pVXbqZI-8rxYur8_WZ8XGYAWpXY9-mTGIc1ZEI57HLfNP/exec", {
-                    method: "POST",
+                fetch("https://script.google.com/macros/s/AKfycbxMW1UAMtHXVD5h0-RoAGHKq-rcqhkjl8cWi-hsDdGP8pac2G9DP3pZk8IABqeBnUir/exec", {
+                    method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/x-www-form-urlencoded'
                     },
-                    body: JSON.stringify({
-                        registrationNumber: regNumber,
-                        selectedCandidate: selectedCandidate
-                    }),
+                    body: `regNumber=${encodeURIComponent(regNumber)}&candidate=${encodeURIComponent(selectedCandidate)}`,
+                    mode: 'no-cors'  // Disabling CORS checks
                 })
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById("response").innerText = "Vote submitted successfully!";
+                .then(() => {
+                    document.getElementById("response").innerText = "Vote has been submitted successfully. If you have already voted, it won't count.";
+                    document.getElementById("voted-message").style.display = "block"; // Show voted message
                     resetForm();
                 })
-                .catch(error => {
-                    document.getElementById("response").innerText = "There was an error submitting your vote.";
-                    console.error("Error:", error);
+                .catch(() => {
+                    document.getElementById("response").innerText = "An error occurred. Please try again.";
                 });
             } else {
-                alert('Please select a candidate.');
+                document.getElementById("response").innerText = "Please enter your registration number and select a candidate.";
             }
         }
 
         function resetForm() {
-            candidateBoxes.forEach(box => box.classList.remove('selected'));
+            document.getElementById("regNumber").value = "";
+            candidateBoxes.forEach(b => b.classList.remove('selected'));
             selectedCandidate = null;
-            document.getElementById("response").innerText = '';
+            document.getElementById("response").innerText = "";
+            document.getElementById("voted-message").style.display = "none"; // Hide voted message on reset
         }
     </script>
 </body>
